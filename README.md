@@ -1,41 +1,43 @@
-# MarkdownCache
+[![Build Status](https://travis-ci.org/ssaunier/markdown_cache.svg?branch=master)](https://travis-ci.org/ssaunier/markdown_cache)
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/markdown_cache`. To experiment with that code, run `bin/console` for an interactive prompt.
+## MarkdownCache
 
-TODO: Delete this and the text above, and describe your gem
+Simple and zero-configuration gem to quickly add Markdown rendering to your Rails views. Once installed, just use in any view:
 
-## Installation
-
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'markdown_cache'
+```erb
+<%= markdown "**Hello** _world_" %>
 ```
 
-And then execute:
+### Dependencies & Defaults
 
-    $ bundle
+This gem uses `kramdown` and `rouge` and will require them automatically. **You also need a Redis server running** both locally and in production as this gem uses a redis-back cached.
 
-Or install it yourself as:
+The selected input format is **GitHub Flafored Markdown**.
 
-    $ gem install markdown_cache
+### Setup
 
-## Usage
+Add this to your `Gemfile`, then run `bundle install` :
 
-TODO: Write usage instructions here
+```ruby
+gem "markdown_cache", "~> 0.1"
+```
 
-## Development
+You may use the provided CSS file for syntax highlighting (GitHub style) or download any pygments-compatible CSS stylesheet (`.highlight` CSS class):
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+```css
+/*
+ *= require markdown_cache
+ */
+```
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+By default, the gem will pick up the local Redis instance or the one defined with `REDIS_URL` but if you need to be specific, add an initializer to your Rails app, for instance:
 
-## Contributing
-
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/markdown_cache.
-
-
-## License
-
-The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
+```ruby
+# config/initializers/markdown_cache.rb
+if Rails.env.production?
+  MarkdownCache.configure do |config|
+    config.redis = { url: ENV['REDISCLOUD_URL'] }
+  end
+end
+```
 
