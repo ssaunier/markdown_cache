@@ -12,7 +12,7 @@ Simple and zero-configuration gem to quickly add Markdown rendering to your Rail
 
 This gem uses `kramdown` and `rouge` and will require them automatically. **You also need a Redis server running** both locally and in production as this gem uses a redis-back cached.
 
-The selected input format is **GitHub Flafored Markdown**.
+The selected input format is **GitHub Flavored Markdown**.
 
 ### Setup
 
